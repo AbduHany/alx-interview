@@ -1,3 +1,9 @@
+#!/usr/bin/python3
+"""This moodule defines the function pascal_triangle which
+prints a pascal triangle
+"""
+
+
 def pascal_triangle(n):
     """ This function returns a list of integers representing the
         Pascal's triangle of n.

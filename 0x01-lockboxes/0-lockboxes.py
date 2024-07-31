@@ -15,20 +15,22 @@ def canUnlockAll(boxes):
     """
     if len(boxes) == 1:
         return True
-    if not boxes or len(boxes) == 0:
-        return False
+
+    # Opening first box
     openedBoxes = [0]
+
+    # Adding keys in first box to key roster
     keys = []
     for key in boxes[0]:
         keys.append(key)
 
     while keys != []:
         key = keys.pop(0)
-        if key < len(boxes) - 1:
+        if key < len(boxes):
             openedBoxes.append(key)
             for newKey in boxes[key]:
                 if newKey not in openedBoxes:
                     keys.append(newKey)
-    if (len(openedBoxes) == len(boxes)):
+    if (len(boxes) == len(openedBoxes)):
         return True
     return False

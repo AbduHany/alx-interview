@@ -34,4 +34,5 @@ def canUnlockAll(boxes):
                     keys.append(newKey)
     if (len(boxes) == len(openedBoxes)):
         return True
-    return False
+    else:
+        return False

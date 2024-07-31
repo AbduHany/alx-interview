@@ -13,6 +13,8 @@ def canUnlockAll(boxes):
         True - if all boxes can be unlocked
         False - if not all boxes can be unlocked
     """
+    if len(boxes) == 1:
+        return True
     openedBoxes = [0]
     keys = []
     for key in boxes[0]:

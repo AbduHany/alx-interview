@@ -22,13 +22,14 @@ def canUnlockAll(boxes):
     for key in boxes[0]:
         keys.append(key)
 
-    while keys != []:
+    while keys:
         key = keys.pop(0)
         if key < len(boxes):
             if key not in openedBoxes:
                 openedBoxes.append(key)
                 for newKey in boxes[key]:
                     keys.append(newKey)
+    print(boxes, openedBoxes)
     if (len(boxes) == len(openedBoxes)):
         return True
     else:

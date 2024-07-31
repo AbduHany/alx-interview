@@ -20,7 +20,8 @@ def canUnlockAll(boxes):
     # Adding keys in first box to key roster
     keys = []
     for key in boxes[0]:
-        keys.append(key)
+        if key not in openedBoxes and key < len(boxes):
+            keys.append(key)
 
     while keys != []:
         key = keys.pop(0)

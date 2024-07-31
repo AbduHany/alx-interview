@@ -22,6 +22,7 @@ def canUnlockAll(boxes):
     for key in boxes[0]:
         keys.append(key)
 
+    # Append keys and add opened boxes
     while keys:
         key = keys.pop()
         if key < len(boxes):
@@ -29,6 +30,8 @@ def canUnlockAll(boxes):
                 openedBoxes.append(key)
                 for newKey in boxes[key]:
                     keys.append(newKey)
+    
+    # Compare lens of opened boxes to the boxes
     if (len(boxes) == len(openedBoxes)):
         return True
     else:

@@ -30,7 +30,7 @@ def canUnlockAll(boxes):
                 openedBoxes.append(key)
                 for newKey in boxes[key]:
                     keys.append(newKey)
-    
+
     # Compare lens of opened boxes to the boxes
     if (len(boxes) == len(openedBoxes)):
         return True

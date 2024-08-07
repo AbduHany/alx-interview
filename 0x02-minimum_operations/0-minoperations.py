@@ -13,7 +13,7 @@ def minOperations(n):
     num = n
     divisions = []
     i = 2
-    while i < n:
+    while i < n + 1:
         if num % i == 0:
             divisions.append(i)
             num = num // i

@@ -24,5 +24,7 @@ def minOperations(n):
             i += 1
     if len(divisions) == 0:
         return n
+    elif (len(divisions) == 1):
+        return 0
     else:
         return sum(divisions)

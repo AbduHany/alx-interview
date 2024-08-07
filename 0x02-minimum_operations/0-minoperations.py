@@ -13,11 +13,10 @@ def minOperations(n):
     num = n
     divisions = []
     i = 2
-    while i < num:
+    while i < n:
         if num % i == 0:
             divisions.append(i)
             num = num // i
-            i = 2
         else:
             i += 1
     if len(divisions) == 0:

@@ -8,7 +8,7 @@ def minOperations(n):
         to create n * 'H' characters. The only allowed operations are:
         Copy all & Paste
     """
-    if (n <= 1):
+    if (n <= 1 or not isinstance(n, int)):
         return 0
     num = n
     divisions = []

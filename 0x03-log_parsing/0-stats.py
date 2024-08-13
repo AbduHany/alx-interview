@@ -14,10 +14,11 @@ def printDict(occurenceDict):
             occurenceDict (dict): the dictionary of occurences.
     """
     for key in sorted(occurenceDict.keys()):
-        print("{}: {}".format(key, occurenceDict[key]))
+        if occurenceDict[key] != 0 and key in [200, 301, 400, 401, 403, 404, 405, 500]:
+            print("{}: {}".format(key, occurenceDict[key]))
 
 
-count = 1
+count = 0
 sum = 0
 occurenceDict = {}
 try:
@@ -26,13 +27,14 @@ try:
         r' \[.+\] "[A-Z]{3} .*" ([0-9]{3})'
         r' ([0-9]*)')
     for line in sys.stdin:
+        count += 1
         if re.match(regexPattern, line):
             match = regexPattern.match(line)
             try:
                 statusCode = int(match.group(2))
                 fileSize = int(match.group(3))
             except Exception:
-                continue
+                pass
             if statusCode not in occurenceDict.keys():
                 occurenceDict[statusCode] = 1
             else:
@@ -41,9 +43,6 @@ try:
             if (count % 10 == 0):
                 print("File size: {}".format(sum))
                 printDict(occurenceDict)
-            count += 1
-        else:
-            continue
 except KeyboardInterrupt:
     print("File size: {}".format(sum))
     printDict(occurenceDict)

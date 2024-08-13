@@ -1,9 +1,18 @@
 #!/usr/bin/python3
+"""This module parses a log that's displayed
+in stdin and displays its stats.
+"""
 import sys
 import re
 
 
 def printDict(occurenceDict):
+    """ This function prints the dictionary of
+        Status code occurences in the parsed log
+        in sorted order.
+        Args:
+            occurenceDict (dict): the dictionary of occurences.
+    """
     for key in sorted(occurenceDict.keys()):
         print("{}: {}".format(key, occurenceDict[key]))
 

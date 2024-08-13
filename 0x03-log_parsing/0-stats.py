@@ -47,3 +47,4 @@ try:
 except KeyboardInterrupt:
     print("File size: {}".format(sum))
     printDict(occurenceDict)
+    raise

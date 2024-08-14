@@ -39,15 +39,15 @@ try:
     for line in sys.stdin:
         parsed = line[:-1]
         match = regexPattern.fullmatch(parsed)
-        if match is not None:
-            count += 1
+        if match:
             statusCode = match.group(3)
             fileSize = int(match.group(4))
 
-            if statusCode and statusCode in occurenceDict:
-                occurenceDict[statusCode] += 1
-            if fileSize:
-                total_size += fileSize
+            if statusCode and fileSize:
+                count += 1
+                if statusCode in occurenceDict:
+                    occurenceDict[statusCode] += 1
+                    total_size += fileSize
 
             if count % 10 == 0:
                 printDict(total_size, occurenceDict)

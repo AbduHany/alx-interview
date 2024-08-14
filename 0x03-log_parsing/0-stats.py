@@ -6,13 +6,14 @@ import sys
 import re
 
 
-def printDict(occurenceDict):
+def printDict(total_size, occurenceDict):
     """ This function prints the dictionary of
         Status code occurrences in the parsed log
         in sorted order.
         Args:
             occurenceDict (dict): the dictionary of occurrences.
     """
+    print("File size: {}".format(total_size))
     for key in sorted(occurenceDict.keys()):
         if occurenceDict[key] != 0:
             print("{}: {}".format(key, occurenceDict[key]))
@@ -47,11 +48,6 @@ try:
                 total_size += fileSize
 
             if count % 10 == 0:
-                print("File size: {}".format(total_size))
-                printDict(occurenceDict)
-
+                printDict(total_size, occurenceDict)
 except KeyboardInterrupt:
-    pass
-finally:
-    print("File size: {}".format(total_size))
-    printDict(occurenceDict)
+    printDict(total_size, occurenceDict)

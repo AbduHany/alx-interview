@@ -6,18 +6,20 @@ import sys
 import re
 
 
-def printDict(occurenceDict):
+def printDict(total_size, occurenceDict):
     """ This function prints the dictionary of
         Status code occurrences in the parsed log
         in sorted order.
         Args:
             occurenceDict (dict): the dictionary of occurrences.
     """
+    print("File size: {}".format(total_size))
     for key in sorted(occurenceDict.keys()):
         if occurenceDict[key] != 0:
             print("{}: {}".format(key, occurenceDict[key]))
 
 
+count = 0
 total_size = 0
 occurenceDict = {
     "200": 0,
@@ -31,30 +33,19 @@ occurenceDict = {
 }
 
 try:
-    regexPattern = re.compile(
-        r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$'  # noqa
-    )
-    count = 0
     for line in sys.stdin:
-        match = regexPattern.match(line)
-        if match:
-            statusCode = match.group(3)
-            fileSize = match.group(4)
-
-            if statusCode and fileSize:  # Ensure both are present
-                count += 1
-                fileSize = int(fileSize)
-
-                if statusCode in occurenceDict:
+        parsed = line.split()
+        if len(parsed) > 2:
+            count += 1
+            try:
+                statusCode = parsed[-2]
+                fileSize = int(parsed[-1])
+                if statusCode in occurenceDict.keys():
                     occurenceDict[statusCode] += 1
-                    total_size += fileSize
-
+                total_size += fileSize
                 if count % 10 == 0:
-                    print("File size: {}".format(total_size))
-                    printDict(occurenceDict)
-
-except KeyboardInterrupt:
-    pass
-finally:
-    print("File size: {}".format(total_size))
-    printDict(occurenceDict)
+                    printDict(total_size, occurenceDict)
+            except Exception:
+                continue
+except Exception:
+    printDict(total_size, occurenceDict)

@@ -36,17 +36,17 @@ try:
     for line in sys.stdin:
         count += 1
         match = regexPattern.match(line)
-        try:
-            statusCode = match.group(3)
-            fileSize = int(match.group(4))
-            if fileSize:
-                totalSize += fileSize
-            if statusCode and statusCode in occurenceDict.keys():
-                occurenceDict[statusCode] += 1
-            if (count % 10 == 0):
-                printDict(totalSize, occurenceDict)
+        if match:
+            try:
+                statusCode = match.group(3)
+                fileSize = int(match.group(4))
+                if fileSize:
+                    totalSize += fileSize
+                if statusCode and statusCode in occurenceDict.keys():
+                    occurenceDict[statusCode] += 1
+                if (count % 10 == 0):
+                    printDict(totalSize, occurenceDict)
         except Exception as e:
-            print(e)
             continue
 except KeyboardInterrupt:
     print("File size: {}".format(totalSize))

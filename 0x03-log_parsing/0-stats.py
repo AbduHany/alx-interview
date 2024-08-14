@@ -43,9 +43,10 @@ try:
             statusCode = match.group(3)
             fileSize = int(match.group(4))
 
-            if statusCode in occurenceDict:
+            if statusCode and statusCode in occurenceDict:
                 occurenceDict[statusCode] += 1
-            total_size += fileSize
+            if fileSize:
+                total_size += fileSize
 
             if count % 10 == 0:
                 printDict(total_size, occurenceDict)

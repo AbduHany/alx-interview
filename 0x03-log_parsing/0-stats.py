@@ -47,5 +47,5 @@ try:
                     printDict(total_size, occurenceDict)
             except Exception:
                 continue
-except Exception:
+finally:
     printDict(total_size, occurenceDict)

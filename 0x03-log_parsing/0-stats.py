@@ -6,20 +6,21 @@ import sys
 import re
 
 
-def printDict(occurenceDict):
+def printDict(totalSize, occurenceDict):
     """ This function prints the dictionary of
-        Status code occurrences in the parsed log
+        Status code occurences in the parsed log
         in sorted order.
         Args:
-            occurenceDict (dict): the dictionary of occurrences.
+            occurenceDict (dict): the dictionary of occurences.
     """
+    print("File size: {}".format(totalSize))
     for key in sorted(occurenceDict.keys()):
         if occurenceDict[key] != 0:
             print("{}: {}".format(key, occurenceDict[key]))
 
 
 count = 0
-total_size = 0
+totalSize = 0
 occurenceDict = {
     "200": 0,
     "301": 0,
@@ -30,28 +31,24 @@ occurenceDict = {
     "405": 0,
     "500": 0,
 }
-
 try:
-    regexPattern = re.compile(
-        r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$'  # noqa
-    )
+    regexPattern = re.compile(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$')  # noqa
     for line in sys.stdin:
+        count += 1
         match = regexPattern.match(line)
-        if match:
-            count += 1
+        try:
             statusCode = match.group(3)
             fileSize = int(match.group(4))
-
-            if statusCode in occurenceDict:
+            if fileSize:
+                totalSize += fileSize
+            if statusCode and statusCode in occurenceDict.keys():
                 occurenceDict[statusCode] += 1
-                total_size += fileSize
-
-            if count % 10 == 0:
-                print("File size: {}".format(total_size))
-                printDict(occurenceDict)
-
+            if (count % 10 == 0):
+                printDict(totalSize, occurenceDict)
+        except Exception as e:
+            print(e)
+            continue
 except KeyboardInterrupt:
-    pass
-finally:
-    print("File size: {}".format(total_size))
+    print("File size: {}".format(totalSize))
     printDict(occurenceDict)
+    raise

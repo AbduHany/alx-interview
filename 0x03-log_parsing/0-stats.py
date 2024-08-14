@@ -14,32 +14,37 @@ def printDict(occurenceDict):
             occurenceDict (dict): the dictionary of occurences.
     """
     for key in sorted(occurenceDict.keys()):
-        if occurenceDict[key] != 0 and key in [200, 301, 400, 401, 403, 404, 405, 500]:
+        if occurenceDict[key] != 0:
             print("{}: {}".format(key, occurenceDict[key]))
 
 
 count = 0
 sum = 0
-occurenceDict = {}
+occurenceDict = {
+    "200": 0,
+    "301": 0,
+    "400": 0,
+    "401": 0,
+    "403": 0,
+    "404": 0,
+    "405": 0,
+    "500": 0,
+}
 try:
-    regexPattern = re.compile(
-        r'((?:[0-9]{1,3}\.){3}[0-9]{1,3}) -'
-        r' \[.+\] "[A-Z]{3} .*" ([0-9]{3})'
-        r' ([0-9]*)')
+    regexPattern = re.compile(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$')  # noqa
     for line in sys.stdin:
         count += 1
+        string = line[:-1]
         if re.match(regexPattern, line):
             match = regexPattern.match(line)
             try:
-                statusCode = int(match.group(2))
-                fileSize = int(match.group(3))
+                statusCode = match.group(3)
+                fileSize = int(match.group(4))
             except Exception:
                 pass
-            if statusCode not in occurenceDict.keys():
-                occurenceDict[statusCode] = 1
-            else:
+            if statusCode in occurenceDict.keys():
                 occurenceDict[statusCode] += 1
-            sum += fileSize
+                sum += fileSize
             if (count % 10 == 0):
                 print("File size: {}".format(sum))
                 printDict(occurenceDict)

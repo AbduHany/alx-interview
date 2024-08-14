@@ -45,7 +45,7 @@ try:
 
             if statusCode in occurenceDict:
                 occurenceDict[statusCode] += 1
-                total_size += fileSize
+            total_size += fileSize
 
             if count % 10 == 0:
                 printDict(total_size, occurenceDict)

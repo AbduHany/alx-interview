@@ -49,5 +49,5 @@ try:
 
             if count % 10 == 0:
                 printDict(total_size, occurenceDict)
-except KeyboardInterrupt:
+finally:
     printDict(total_size, occurenceDict)

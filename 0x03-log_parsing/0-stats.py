@@ -37,7 +37,8 @@ try:
         r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[ ]+-[ ]+\[(.+?)\][ ]+"GET \/projects\/260 HTTP\/1\.1"[ ]+(\d{3})[ ]+(\d+)'  # noqa
     )
     for line in sys.stdin:
-        match = regexPattern.match(line)
+        parsed = line[:-1]
+        match = regexPattern.fullmatch(parsed)
         if match:
             count += 1
             statusCode = match.group(3)

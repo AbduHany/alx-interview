@@ -6,20 +6,18 @@ import sys
 import re
 
 
-def printDict(total_size, occurenceDict):
+def printDict(occurenceDict):
     """ This function prints the dictionary of
         Status code occurrences in the parsed log
         in sorted order.
         Args:
             occurenceDict (dict): the dictionary of occurrences.
     """
-    print("File size: {}".format(total_size))
     for key in sorted(occurenceDict.keys()):
         if occurenceDict[key] != 0:
             print("{}: {}".format(key, occurenceDict[key]))
 
 
-count = 0
 total_size = 0
 occurenceDict = {
     "200": 0,
@@ -34,25 +32,29 @@ occurenceDict = {
 
 try:
     regexPattern = re.compile(
-        r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})[ ]+-[ ]+\[(.+?)\][ ]+"GET \/projects\/260 HTTP\/1\.1"[ ]+(\d{3})[ ]+(\d+)'  # noqa
+        r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$'  # noqa
     )
+    count = 0
     for line in sys.stdin:
-        parsed = line[:-1]
-        match = regexPattern.fullmatch(parsed)
+        match = regexPattern.match(line)
         if match:
-            try:
-                statusCode = match.group(3)
-                fileSize = int(match.group(4))
+            statusCode = match.group(3)
+            fileSize = match.group(4)
 
-                if statusCode and fileSize:
-                    count += 1
-                    if statusCode in occurenceDict:
-                        occurenceDict[statusCode] += 1
-                        total_size += fileSize
+            if statusCode and fileSize:  # Ensure both are present
+                count += 1
+                fileSize = int(fileSize)
+
+                if statusCode in occurenceDict:
+                    occurenceDict[statusCode] += 1
+                    total_size += fileSize
 
                 if count % 10 == 0:
-                    printDict(total_size, occurenceDict)
-            except Exception:
-                pass
+                    print("File size: {}".format(total_size))
+                    printDict(occurenceDict)
+
+except KeyboardInterrupt:
+    pass
 finally:
-    printDict(total_size, occurenceDict)
+    print("File size: {}".format(total_size))
+    printDict(occurenceDict)

@@ -39,7 +39,7 @@ try:
     for line in sys.stdin:
         parsed = line[:-1]
         match = regexPattern.fullmatch(parsed)
-        if match:
+        if match is not None:
             count += 1
             statusCode = match.group(3)
             fileSize = int(match.group(4))

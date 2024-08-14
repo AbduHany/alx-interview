@@ -34,7 +34,7 @@ occurenceDict = {
 
 try:
     regexPattern = re.compile(
-        r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)'  # noqa
+        r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.+?)\] "GET \/projects\/260 HTTP\/1\.1" (\d{3}) (\d+)$'  # noqa
     )
     for line in sys.stdin:
         match = regexPattern.match(line)

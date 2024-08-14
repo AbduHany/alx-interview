@@ -40,16 +40,19 @@ try:
         parsed = line[:-1]
         match = regexPattern.fullmatch(parsed)
         if match:
-            statusCode = match.group(3)
-            fileSize = int(match.group(4))
+            try:
+                statusCode = match.group(3)
+                fileSize = int(match.group(4))
 
-            if statusCode and fileSize:
-                count += 1
-                if statusCode in occurenceDict:
-                    occurenceDict[statusCode] += 1
-                    total_size += fileSize
+                if statusCode and fileSize:
+                    count += 1
+                    if statusCode in occurenceDict:
+                        occurenceDict[statusCode] += 1
+                        total_size += fileSize
 
-            if count % 10 == 0:
-                printDict(total_size, occurenceDict)
+                if count % 10 == 0:
+                    printDict(total_size, occurenceDict)
+            except Exception:
+                pass
 finally:
     printDict(total_size, occurenceDict)

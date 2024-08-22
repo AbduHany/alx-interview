@@ -3,6 +3,7 @@
 represents a valid UTF-8 encoding.
 """
 
+
 def byte_length(byte):
     """Determines the number of bytes in a UTF-8 character based
     on the first byte.
@@ -18,6 +19,7 @@ def byte_length(byte):
     else:
         return -1
 
+
 def validUTF8(data):
     """This function determines if data set is
         a valid UTF-8 encoding.
@@ -26,7 +28,7 @@ def validUTF8(data):
     while i < len(data):
         # get the number of UTF-8 character bytes by bit masking
         number_of_bytes = byte_length(data[i])
-        #invalid byte
+        # invalid byte
         if number_of_bytes == -1:
             return False
         for j in range(1, number_of_bytes):

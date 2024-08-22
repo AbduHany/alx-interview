@@ -31,8 +31,9 @@ def validUTF8(data):
         # invalid byte
         if number_of_bytes == -1:
             return False
+
         for j in range(1, number_of_bytes):
-            if i+j > len(data) or (data[i+j] & 0b11000000) != 0b10000000:
+            if (i+j >= len(data)) or (data[i+j] & 0b11000000) != 0b10000000:
                 return False
         i += number_of_bytes
     return True

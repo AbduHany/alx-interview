@@ -13,22 +13,19 @@ def makeChange(coins, total):
     Returns:
         fewest number of coins needed to meet total
     """
-    coins.sort(reverse=True)  # Sort coins in descending order
-    ans = 0  # To keep track of the number of coins used
-
-    for coin in coins:
-        if total == 0:
-            break  # Stop if the total is met
-        if coin <= total:
-            num_coins = total // coin  # Find how many of this coin can be used
-            ans += num_coins
-            total -= num_coins * coin  # Reduce the total by the coin value
-
-    # If we still have a total left, it's not possible to make that total
+    n = len(coins)
+    if total <= 0:
+        return 0
+    ans = []
+    i = n - 1
+    while (i >= 0):
+        while (total >= coins[i]):
+            total -= coins[i]
+            ans.append(coins[i])
+        i -= 1
     if total != 0:
         return -1
-
-    return ans
+    return len(ans)
     # table = [0 for i in range(total + 1)]
     # table[0] = 0
     # # initializing the table with infinite values

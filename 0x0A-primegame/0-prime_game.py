@@ -2,25 +2,6 @@
 """ This module defines the isWinner function """
 
 
-def is_prime(n):
-    """ Returns True if n is a prime number """
-    if n == 2 or n == 3:
-        return True
-    if n < 2 or n % 2 == 0:
-        return False
-    if n < 9:
-        return True
-    if n % 3 == 0:
-        return False
-    r = int(n ** 0.5)
-    f = 5
-    while f <= r:
-        if n % f == 0 or n % (f + 2) == 0:
-            return False
-        f += 6
-    return True
-
-
 def sieve_of_eratosthenes(max_n):
     """ Precompute primes up to max_n using Sieve of Eratosthenes """
     is_prime = [True] * (max_n + 1)
@@ -39,7 +20,7 @@ def isWinner(x, nums):
         x (int): number of rounds
         nums (list): list of numbers
     """
-    if x == 0 or not nums:
+    if x <= 0 or not nums:
         return None
 
     max_n = max(nums)  # Find the largest number in the rounds

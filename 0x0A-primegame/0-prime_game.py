@@ -37,7 +37,7 @@ def isWinner(x, nums):
         x (int): number of rounds
         nums (list): list of numbers
     """
-    if x == 0 or nums = []:
+    if x == 0 or nums == []:
         return None
     rounds = dict()
     maria_wins = 0

@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-""" This module defines the isWinner function
-"""
+""" This module defines the isWinner function """
 
 
 def is_prime(n):
-    """ This function returns True if n is a prime number
-    """
+    """ Returns True if n is a prime number """
     if n == 2 or n == 3:
         return True
     if n < 2 or n % 2 == 0:
@@ -15,79 +13,67 @@ def is_prime(n):
     if n % 3 == 0:
         return False
     r = int(n ** 0.5)
-    # since all primes > 3 are of the form 6n ± 1
-    # start with f=5 (which is prime)
-    # and test f, f+2 for being prime
-    # then loop by 6.
     f = 5
     while f <= r:
-        print('\t', f)
-        if n % f == 0:
-            return False
-        if n % (f + 2) == 0:
+        if n % f == 0 or n % (f + 2) == 0:
             return False
         f += 6
     return True
 
 
+def sieve_of_eratosthenes(max_n):
+    """ Precompute primes up to max_n using Sieve of Eratosthenes """
+    is_prime = [True] * (max_n + 1)
+    is_prime[0] = is_prime[1] = False
+    for i in range(2, int(max_n ** 0.5) + 1):
+        if is_prime[i]:
+            for multiple in range(i * i, max_n + 1, i):
+                is_prime[multiple] = False
+    return is_prime
+
+
 def isWinner(x, nums):
-    """ This function prints the winner of the primeGame.
-    either Ben or Maria.
+    """ This function determines the winner of the primeGame
+    either Ben or Maria based on the rounds played.
     Args:
         x (int): number of rounds
         nums (list): list of numbers
     """
-    if x == 0 or nums == []:
+    if x == 0 or not nums:
         return None
-    rounds = dict()
+
+    max_n = max(nums)  # Find the largest number in the rounds
+    # Precompute primes up to the largest number
+    primes = sieve_of_eratosthenes(max_n)
+
+    # Initialize win counters
     maria_wins = 0
     ben_wins = 0
-    for number in nums:
-        if number in rounds:
-            if rounds[number] == "Maria":
-                maria_wins += 1
-            else:
-                ben_wins += 1
-            continue
-        roster = [x for x in range(1, number + 1)]
-        maria = []
-        ben = []
-        maria_turn = True
-        i = 0
-        while i < len(roster):
-            if len(roster) == 1 and (not is_prime(roster[0])):
-                if maria_turn:
-                    rounds[number] = "Ben"
-                    ben_wins += 1
-                else:
-                    rounds[number] = "Maria"
-                    maria_wins += 1
-            choice = roster[i]
-            if is_prime(choice):
-                if maria_turn:
-                    maria.append(choice)
-                    roster.remove(choice)
-                    j = 0
-                    while j < len(roster):
-                        if roster[j] % choice == 0:
-                            maria.append(roster[j])
-                            roster.remove(roster[j])
-                        j += 1
-                else:
-                    ben.append(choice)
-                    roster.remove(choice)
-                    j = 0
-                    while j < len(roster):
-                        if roster[j] % choice == 0:
-                            ben.append(roster[j])
-                            roster.remove(roster[j])
-                        j += 1
-                i = 0
-                maria_turn = not maria_turn
-            else:
-                i += 1
-    if ben_wins > maria_wins:
-        return "Ben"
-    elif ben_wins < maria_wins:
+
+    # Loop through each round
+    for n in nums:
+        # Simulate game with the number n
+        # Numbers from 1 to n are available initially
+        available_numbers = [True] * (n + 1)
+        moves = 0
+        for i in range(2, n + 1):
+            if available_numbers[i] and primes[i]:
+                # If the number is prime and still available, it's a valid move
+                moves += 1
+                # Mark all multiples of the prime number as unavailable
+                for multiple in range(i, n + 1, i):
+                    available_numbers[multiple] = False
+
+        # Determine who wins the round based on the number of moves
+        if moves % 2 == 0:
+            ben_wins += 1  # Ben wins if the number of moves is even
+        else:
+            maria_wins += 1  # Maria wins if the number of moves is odd
+
+    # Determine the overall winner
+    if maria_wins > ben_wins:
         return "Maria"
-    return None
+    elif ben_wins > maria_wins:
+        return "Ben"
+    else:
+        return None
